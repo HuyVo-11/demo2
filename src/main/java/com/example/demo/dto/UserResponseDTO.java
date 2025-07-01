@@ -7,11 +7,7 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * DTO đầu ra (Response DTO) cho User.
- * Chứa các trường mà backend trả về cho client.
- * KHÔNG bao gồm các trường nhạy cảm như password.
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

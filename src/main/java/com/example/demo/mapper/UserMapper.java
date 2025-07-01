@@ -35,21 +35,10 @@ public class UserMapper {
         user.setPhone(requestDTO.getPhone());
         user.setProvinceId(requestDTO.getProvinceId());
         user.setWardId(requestDTO.getWardId());
-
-        // Các trường như id, code, firstName, birthday, createdDate, deleted, isAdmin, status
-        // KHÔNG được map ở đây. Chúng sẽ được xử lý ở Controller/Service.
-
+        
         return user;
     }
 
-    /**
-     * Chuyển đổi từ User Entity sang UserResponseDTO (để trả về client).
-     * Chỉ map các trường có trong UserResponseDTO. KHÔNG trả về các trường nhạy cảm
-     * như password hoặc các trường chỉ dùng nội bộ BE.
-     *
-     * @param user User Entity.
-     * @return UserResponseDTO tương ứng.
-     */
     public static UserResponseDTO toResponseDTO(User user) {
         if (user == null) {
             return null;
@@ -69,7 +58,6 @@ public class UserMapper {
         responseDTO.setGender(user.getGender());
         responseDTO.setIsAdmin(user.getIsAdmin());
         responseDTO.setLastName(user.getLastName());
-        // responseDTO.setPassword(user.getPassword()); // KHÔNG BAO GIỜ trả về mật khẩu cho client!
         responseDTO.setPhone(user.getPhone());
         responseDTO.setProvinceId(user.getProvinceId());
         responseDTO.setStatus(user.getStatus());

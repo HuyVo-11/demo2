@@ -24,6 +24,4 @@ public class UserRequestDTO {
     private Integer provinceId;
     private Integer wardId;
     private Boolean isAdmin;
-    // Không có các trường như id, code, firstName, birthday, createdDate, deleted, isAdmin, status
-    // vì chúng sẽ được backend tự động tạo/quản lý.
 }
