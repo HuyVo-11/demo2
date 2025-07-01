@@ -6,14 +6,9 @@ import com.example.demo.entity.User;
 
 public class UserMapper {
 
-    /**
-     * Chuyển đổi từ UserRequestDTO (đầu vào từ client) sang User Entity.
-     * Chỉ map các trường có trong UserRequestDTO. Các trường khác của User Entity
-     * sẽ được gán giá trị mặc định hoặc tạo tự động ở tầng Service/Controller.
-     *
-     * @param requestDTO UserRequestDTO chứa dữ liệu từ client.
-     * @return User Entity tương ứng.
-     */
+    
+     //Chuyển đổi từ UserRequestDTO (đầu vào từ client) sang User Entity.
+
     public static User toEntity(UserRequestDTO requestDTO) {
         if (requestDTO == null) {
             return null;
@@ -35,7 +30,7 @@ public class UserMapper {
         user.setPhone(requestDTO.getPhone());
         user.setProvinceId(requestDTO.getProvinceId());
         user.setWardId(requestDTO.getWardId());
-        
+
         return user;
     }
 
