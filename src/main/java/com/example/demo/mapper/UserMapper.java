@@ -1,50 +1,79 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.UserForm;
+import com.example.demo.dto.UserRequestDTO; // Import Request DTO
+import com.example.demo.dto.UserResponseDTO; // Import Response DTO
 import com.example.demo.entity.User;
 
 public class UserMapper {
 
-    public static User toEntity(UserForm form) {
-        if (form == null) {
+    /**
+     * Chuyển đổi từ UserRequestDTO (đầu vào từ client) sang User Entity.
+     * Chỉ map các trường có trong UserRequestDTO. Các trường khác của User Entity
+     * sẽ được gán giá trị mặc định hoặc tạo tự động ở tầng Service/Controller.
+     *
+     * @param requestDTO UserRequestDTO chứa dữ liệu từ client.
+     * @return User Entity tương ứng.
+     */
+    public static User toEntity(UserRequestDTO requestDTO) {
+        if (requestDTO == null) {
             return null;
         }
 
         User user = new User();
-        user.setAddress(form.getAddress());
-        user.setAvatar(form.getAvatar());
-        user.setDistrictId(form.getDistrictId());
-        user.setEmail(form.getEmail());
-        if (form.getGender() != null) {
-            user.setGender(form.getGender() ? "Male" : "Female");
+        user.setAddress(requestDTO.getAddress());
+        user.setAvatar(requestDTO.getAvatar());
+        user.setDistrictId(requestDTO.getDistrictId());
+        user.setEmail(requestDTO.getEmail());
+        // Chuyển đổi Boolean gender từ RequestDTO sang String gender trong User Entity
+        if (requestDTO.getGender() != null) {
+            user.setGender(requestDTO.getGender() ? "Male" : "Female");
         } else {
             user.setGender(null);
         }
-        user.setLastName(form.getLastName());
-        user.setPassword(form.getPassword());
-        user.setPhone(form.getPhone());
-        user.setProvinceId(form.getProvinceId());
-        user.setWardId(form.getWardId());
+        user.setLastName(requestDTO.getLastName());
+        user.setPassword(requestDTO.getPassword()); // Mật khẩu sẽ được mã hóa sau đó
+        user.setPhone(requestDTO.getPhone());
+        user.setProvinceId(requestDTO.getProvinceId());
+        user.setWardId(requestDTO.getWardId());
+
+        // Các trường như id, code, firstName, birthday, createdDate, deleted, isAdmin, status
+        // KHÔNG được map ở đây. Chúng sẽ được xử lý ở Controller/Service.
 
         return user;
     }
 
-    public static UserForm toForm(User user) {
+    /**
+     * Chuyển đổi từ User Entity sang UserResponseDTO (để trả về client).
+     * Chỉ map các trường có trong UserResponseDTO. KHÔNG trả về các trường nhạy cảm
+     * như password hoặc các trường chỉ dùng nội bộ BE.
+     *
+     * @param user User Entity.
+     * @return UserResponseDTO tương ứng.
+     */
+    public static UserResponseDTO toResponseDTO(User user) {
         if (user == null) {
             return null;
         }
 
-        UserForm form = new UserForm();
-        form.setAddress(user.getAddress());
-        form.setAvatar(user.getAvatar());
-        form.setDistrictId(user.getDistrictId());
-        form.setEmail(user.getEmail());
-        form.setGender(user.getGender() != null ? user.getGender().equalsIgnoreCase("Male") : null);
-        form.setLastName(user.getLastName());
-        form.setPhone(user.getPhone());
-        form.setProvinceId(user.getProvinceId());
-        form.setWardId(user.getWardId());
-
-        return form;
+        UserResponseDTO responseDTO = new UserResponseDTO();
+        responseDTO.setId(user.getId());
+        responseDTO.setAddress(user.getAddress());
+        responseDTO.setAvatar(user.getAvatar());
+        responseDTO.setBirthday(user.getBirthday());
+        responseDTO.setCode(user.getCode());
+        responseDTO.setCreatedDate(user.getCreatedDate());
+        responseDTO.setDeleted(user.isDeleted());
+        responseDTO.setDistrictId(user.getDistrictId());
+        responseDTO.setEmail(user.getEmail());
+        responseDTO.setFirstName(user.getFirstName());
+        responseDTO.setGender(user.getGender());
+        responseDTO.setIsAdmin(user.getIsAdmin());
+        responseDTO.setLastName(user.getLastName());
+        // responseDTO.setPassword(user.getPassword()); // KHÔNG BAO GIỜ trả về mật khẩu cho client!
+        responseDTO.setPhone(user.getPhone());
+        responseDTO.setProvinceId(user.getProvinceId());
+        responseDTO.setStatus(user.getStatus());
+        responseDTO.setWardId(user.getWardId());
+        return responseDTO;
     }
 }
