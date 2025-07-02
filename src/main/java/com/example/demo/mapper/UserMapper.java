@@ -12,5 +12,6 @@ public interface UserMapper {
     User mapToUser(UserForm userForm);
     @Mapping(target = "schoolName", source = "school.name", defaultValue = "")
     UserDto mapToUserDto(User user);
+
 }
 
