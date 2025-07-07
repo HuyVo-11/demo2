@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,14 +37,11 @@ public class UserController {
     //Create
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserForm userForm) {
-        User user = userMapper.mapToUser(userForm);
+        User user = userMapper.getEntityFromModel(userForm);
         user.setCreatedDate(LocalDateTime.now());
         user.setDeleted(false);
-        user.setStatus("ACTIVE");
         user.setIsAdmin(false);
         user.setCode("USR-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
-        user.setFirstName(userForm.getLastName());
-        user.setBirthday(LocalDate.of(2000, 1, 1));
 
         if (userForm.getGender() != null) {
             user.setGender(userForm.getGender() ? "Male" : "Female");
@@ -58,8 +54,7 @@ public class UserController {
         }
 
         User savedUser = userRepository.save(user);
-        UserDto userDto = userMapper.mapToUserDto(savedUser);
-        userDto.setSchoolName(user.getSchool() != null ? user.getSchool().getName() : null);
+        UserDto userDto = userMapper.getModelFromEntity(savedUser);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
@@ -71,24 +66,24 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         List<UserDto> userDtos = users.stream()
-                .map(user -> {
-                    UserDto dto = userMapper.mapToUserDto(user);
-                    dto.setSchoolName(user.getSchool() != null ? user.getSchool().getName() : "");
-                    return dto;
-                })
+                .map(user -> userMapper.getModelFromEntity(user))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDtos);
     }
 
     // Detail
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.map(u -> {
-            UserDto dto = userMapper.mapToUserDto(u);
-            dto.setSchoolName(u.getSchool() != null ? u.getSchool().getName() : "");
-            return ResponseEntity.ok(dto);
-        }).orElse(ResponseEntity.notFound().build());
+    public UserDto getUserById(@PathVariable Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserDto dto = userMapper.getModelFromEntity(user);
+            dto.setSchoolName(user.getSchool() != null ? user.getSchool().getName() : "");
+            return dto;
+        } else {
+            return null;
+        }
     }
 
 
@@ -98,7 +93,7 @@ public class UserController {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
-            User user = userMapper.mapToUser(userForm); //userform qua user
+            User user = userMapper.getEntityFromModel(userForm); //userform qua user
             existingUser.setAddress(user.getAddress());
             existingUser.setAvatar(user.getAvatar());
             existingUser.setEmail(user.getEmail());
@@ -129,7 +124,7 @@ public class UserController {
                 existingUser.setSchool(school);
             }
             User savedUser = userRepository.save(existingUser);
-            UserDto userDto = userMapper.mapToUserDto(savedUser);
+            UserDto userDto = userMapper.getModelFromEntity(savedUser);
             userDto.setSchoolName(savedUser.getSchool() != null ? savedUser.getSchool().getName() : "");
             return ResponseEntity.ok(userDto);
         }

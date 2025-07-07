@@ -8,22 +8,22 @@ import java.time.LocalDateTime;
 @Data
 public class UserDto {
     private Long id;
-    private String address;
-    private String avatar;
-    private LocalDate birthday;
-    private String code;
+    private String address; //
+    private String avatar; //
+    private LocalDate birthday; //
+    private String code; //
     private LocalDateTime createdDate;
     private Boolean deleted;
-    private Integer districtId;
-    private String email;
-    private String firstName;
-    private String gender;
+    private Integer districtId; //
+    private String email; //
+    private String firstName; //
+    private String gender; //
     private Boolean isAdmin;
-    private String lastName;
+    private String lastName; //
     private String password;
-    private String phone;
-    private Integer provinceId;
+    private String phone; //
+    private Integer provinceId; //
     private String status;
-    private Integer wardId;
-    private String schoolName;
+    private Integer wardId; //
+    private String schoolName; //
 }
