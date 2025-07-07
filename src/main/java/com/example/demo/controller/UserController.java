@@ -53,6 +53,8 @@ public class UserController {
             user.setSchool(school);
         }
 
+        user.setStatus("ACTIVE");
+
         User savedUser = userRepository.save(user);
         UserDto userDto = userMapper.getModelFromEntity(savedUser);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
@@ -93,23 +95,7 @@ public class UserController {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();
-            User user = userMapper.getEntityFromModel(userForm); //userform qua user
-            existingUser.setAddress(user.getAddress());
-            existingUser.setAvatar(user.getAvatar());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setDistrictId(user.getDistrictId());
-            existingUser.setLastName(user.getLastName());
-            existingUser.setFirstName(user.getFirstName());
-            existingUser.setPassword(user.getPassword());
-            existingUser.setPhone(user.getPhone());
-            existingUser.setProvinceId(user.getProvinceId());
-            existingUser.setWardId(user.getWardId());
-            existingUser.setCode(user.getCode());
-            existingUser.setCreatedDate(user.getCreatedDate());
-            existingUser.setDeleted(user.isDeleted());
-            existingUser.setIsAdmin(user.getIsAdmin());
-            existingUser.setStatus(user.getStatus());
-            existingUser.setBirthday(user.getBirthday());
+            userMapper.updateEntityFromModel(userForm, existingUser);
             //gender
             if (userForm.getGender() != null) {
                 existingUser.setGender(userForm.getGender() ? "male" : "female");
@@ -133,7 +119,7 @@ public class UserController {
 
 
     //Delete
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public  ResponseEntity<Void> deleteUser(@PathVariable Long id){
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()){
