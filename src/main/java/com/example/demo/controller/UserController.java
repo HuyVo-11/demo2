@@ -5,14 +5,16 @@ import com.example.demo.dto.UserForm;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserStatus;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.payload.ApiResponse;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.payload.ApiResponse;
 
-import org.mapstruct.control.MappingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper; //  dùng Spring bean
+    private List<UserDto> users;
 
     //Create
     @PostMapping
@@ -70,6 +73,7 @@ public class UserController {
 
         User savedUser = userRepository.save(user);
         UserDto userDto = userMapper.getModelFromEntity(savedUser);
+        ApiResponse<List<UserDto>> response = new ApiResponse<List<UserDto>>(true, "success", users);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
@@ -83,6 +87,7 @@ public class UserController {
         List<UserDto> userDtos = users.stream()
                 .map(user -> userMapper.getModelFromEntity(user))
                 .collect(Collectors.toList());
+        ApiResponse<List<UserDto>> response = new ApiResponse<List<UserDto>>();
         return ResponseEntity.ok(userDtos);
     }
 
@@ -139,9 +144,9 @@ public class UserController {
             userDto.setSchoolName(savedUser.getSchool() != null ? savedUser.getSchool().getName() : "");
             return ResponseEntity.ok(userDto);
         }
+        ApiResponse response = new ApiResponse(true, "List of users", (Type) userRepository);
         return ResponseEntity.notFound().build();
     }
-
 
     //Delete
     @DeleteMapping("/{id}")
