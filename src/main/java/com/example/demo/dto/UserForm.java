@@ -14,8 +14,7 @@ public class UserForm {
     private String phone;
     private Integer provinceId;
     private Integer wardId;
-    private String school;
+    private Long schoolId;
     private String birthday;
-    private String Status;
-
+    private String status;
 }

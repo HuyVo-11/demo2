@@ -1,6 +1,7 @@
 package com.example.demo; // Đảm bảo package này khớp với package của bạn
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserStatus;
 import com.example.demo.repository.SchoolRepository; // Import các Repository
 import com.example.demo.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner; // Import CommandLineRunner
@@ -52,7 +53,7 @@ public class DemoApplication {
 			user1.setBirthday(LocalDate.of(1995, 10, 20));
 			user1.setCreatedDate(LocalDateTime.now());
 			user1.setGender("Nam");
-			user1.setStatus("ACTIVE");
+			user1.setStatus(UserStatus.valueOf("ACTIVE"));
 			user1.setIsAdmin(false);
 			user1.setDeleted(false);
 			user1.setPassword("JD11111");
@@ -69,7 +70,7 @@ public class DemoApplication {
 			user2.setBirthday(LocalDate.of(1998, 5, 15));
 			user2.setCreatedDate(LocalDateTime.now());
 			user2.setGender("Nam");
-			user2.setStatus("INACTIVE");
+			user2.setStatus(UserStatus.valueOf("INACTIVE"));
 			user2.setIsAdmin(false);
 			user2.setDeleted(false);
 			user2.setPassword("KP222222");
@@ -87,7 +88,7 @@ public class DemoApplication {
 			adminUser.setBirthday(LocalDate.of(2000, 1, 1));
 			adminUser.setCreatedDate(LocalDateTime.now());
 			adminUser.setGender("Other");
-			adminUser.setStatus("ACTIVE");
+			adminUser.setStatus(UserStatus.valueOf("ACTIVE"));
 			adminUser.setIsAdmin(true); // Đặt là admin
 			adminUser.setDeleted(false);
 			adminUser.setPassword("NBT33333");
