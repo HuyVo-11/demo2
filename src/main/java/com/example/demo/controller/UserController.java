@@ -95,8 +95,8 @@ public class UserController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) Long schoolId,
-            @RequestParam(required = false) String dob) {
+            @RequestParam(required = false) Long schoolId)
+            {
 
         // Tạo đối tượng UserFilterRequest
         UserFilterRequest request = new UserFilterRequest();
@@ -105,17 +105,6 @@ public class UserController {
         request.setEmail(email);
         request.setStatus(status);
         request.setSchoolId(schoolId);
-
-        // Xử lý dob
-        if (dob != null && !dob.isBlank()) {
-            try {
-                LocalDate parsedDob = LocalDate.parse(dob, DateTimeFormatter.ISO_LOCAL_DATE);
-                request.setDob(parsedDob);
-            } catch (DateTimeParseException e) {
-                return ResponseEntity.badRequest()
-                        .body(new ApiResponse<>(false, "Invalid date format for dob. Use yyyy-MM-dd", null));
-            }
-        }
 
         // Gọi repository để lọc người dùng
         List<User> users = userRepositoryCustom.filterUsers(request);

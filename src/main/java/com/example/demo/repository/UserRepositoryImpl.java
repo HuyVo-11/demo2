@@ -45,10 +45,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             predicates.add(cb.equal(schoolJoin.get("id"), request.getSchoolId()));
         }
 
-        if (request.getDob() != null) {
-            predicates.add(cb.equal(user.get("dob"), request.getDob()));
-        }
-
         cq.where(predicates.toArray(new Predicate[0]));
         return entityManager.createQuery(cq).getResultList();
     }
