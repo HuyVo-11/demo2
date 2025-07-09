@@ -34,10 +34,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             predicates.add(cb.like(cb.lower(user.get("lastName")), "%" + request.getName().toLowerCase() + "%"));
         }
 
-        if (request.getEmail() != null && !request.getEmail().isBlank()) {
-            predicates.add(cb.like(cb.lower(user.get("email")), "%" + request.getEmail().toLowerCase() + "%"));
-        }
-
         if (request.getStatus() != null && !request.getStatus().isBlank()) {
             try {
                 UserStatus status = UserStatus.valueOf(request.getStatus().toUpperCase());
@@ -46,6 +42,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             }
         }
 
+        //school ID
         if (request.getSchoolId() != null) {
             predicates.add(cb.equal(schoolJoin.get("id"), request.getSchoolId()));
         }
