@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.dto.UserFilterRequest;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
@@ -38,7 +39,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         }
 
         if (request.getStatus() != null && !request.getStatus().isBlank()) {
-            predicates.add(cb.equal(user.get("status"), request.getStatus()));
+            try {
+                UserStatus status = UserStatus.valueOf(request.getStatus().toUpperCase());
+                predicates.add(cb.equal(user.get("status"), status));
+            } catch (IllegalArgumentException e) {
+            }
         }
 
         if (request.getSchoolId() != null) {
