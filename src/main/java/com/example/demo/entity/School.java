@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
  * Lớp Entity School, ánh xạ tới bảng 'school' trong cơ sở dữ liệu.
  * Sử dụng Lombok annotations để giảm thiểu boilerplate code.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "school")
+@Data // khỏi viết getter/setter thủ công, nhớ add lombok.Data
+@NoArgsConstructor // tự động tạo một constructor đối số (default constructor)
+@AllArgsConstructor // tự động tạo ra một constructor vơ tất các đối số, bao gồm cả các trường hợp kế thừa
+@Entity // đánh dấu đây là lớp entity
+@Table(name = "school") //bảng
 public class School {
 
     @Id

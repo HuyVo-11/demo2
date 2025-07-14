@@ -8,18 +8,18 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "user")
+@Data // khỏi viết getter/setter thủ công, nhớ add lombok.Data
+@NoArgsConstructor // tự động tạo một constructor đối số (default constructor)
+@AllArgsConstructor // tự động tạo ra một constructor vơ tất các đối số, bao gồm cả các trường hợp kế thừa
+@Entity // đánh dấu đây là lớp entity
+@Table(name = "user") // tạo bảng (name = "")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255)
+    @Column(length = 255 ) // tạo các cột trong bảng, TRONG () là mô tả của cột
     private String address;
 
     @Column(length = 255)

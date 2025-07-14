@@ -5,7 +5,6 @@ import com.example.demo.dto.UserForm;
 import com.example.demo.entity.User;
 import org.mapstruct.*;
 
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -15,11 +14,11 @@ public interface UserMapper {
     @Named("entityFromModel")
     User getEntityFromModel(UserForm userForm);
 
-    @Mapping(target = "schoolName", source = "school.name", defaultValue = "")
+    @Mapping(target = "schoolName", source = "school.name", defaultValue = " ")
     UserDto getModelFromEntity(User user);
 
     @IterableMapping(qualifiedByName = "entityFromModel")
-    List<User> getEntityListFromModelList(List<UserForm> userForms);
+
 
     @Mapping(target = "school", ignore = true)
     @Mapping(target = "gender", ignore = true)
