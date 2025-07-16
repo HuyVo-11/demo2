@@ -1,5 +1,6 @@
 package com.example.demo; // Đảm bảo package này khớp với package của bạn
 
+import com.example.demo.jwt.JwtProperties;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserStatus;
 import com.example.demo.repository.SchoolRepository; // Import các Repository
@@ -7,6 +8,7 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner; // Import CommandLineRunner
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean; // Import @Bean
 import com.example.demo.entity.School;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootApplication
+@EnableConfigurationProperties(JwtProperties.class)
 @ComponentScan
 public class DemoApplication {
 
@@ -77,7 +80,7 @@ public class DemoApplication {
 			user2.setStatus(UserStatus.valueOf("INACTIVE"));
 			user2.setIsAdmin(false);
 			user2.setDeleted(false);
-			user2.setPassword(passwordEncoder.encode("KP222222"));
+			user2.setPassword(passwordEncoder.encode("KP22222"));
 			user2.setSchool(schoolB); // Gán User này cho School B
 			userRepository.save(user2);
 
