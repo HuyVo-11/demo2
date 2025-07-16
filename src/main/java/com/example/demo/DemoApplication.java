@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean; // Import @Bean
 import com.example.demo.entity.School;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class DemoApplication {
 	 * @return Một instance của CommandLineRunner.
 	 */
 	@Bean
-	public CommandLineRunner demoData(UserRepository userRepository, SchoolRepository schoolRepository) {
+	public CommandLineRunner demoData(UserRepository userRepository, SchoolRepository schoolRepository, PasswordEncoder passwordEncoder) {
 		// Bên trong phương thức này, bạn có thể gọi các phương thức non-static của repository.
 		return args -> {
 			System.out.println("--- Đang khởi tạo dữ liệu demo ---");
@@ -59,7 +60,7 @@ public class DemoApplication {
 			user1.setStatus(UserStatus.valueOf("ACTIVE"));
 			user1.setIsAdmin(false);
 			user1.setDeleted(false);
-			user1.setPassword("JD11111");
+			user1.setPassword(passwordEncoder.encode("JD11111"));
 			user1.setSchool(schoolA); // Gán User này cho School A
 			userRepository.save(user1); // Sử dụng repository đã được inject
 			System.out.println("Đã lưu User 1: " + user1.getFirstName() + " " + user1.getLastName());
@@ -76,7 +77,7 @@ public class DemoApplication {
 			user2.setStatus(UserStatus.valueOf("INACTIVE"));
 			user2.setIsAdmin(false);
 			user2.setDeleted(false);
-			user2.setPassword("KP222222");
+			user2.setPassword(passwordEncoder.encode("KP222222"));
 			user2.setSchool(schoolB); // Gán User này cho School B
 			userRepository.save(user2);
 
@@ -94,7 +95,7 @@ public class DemoApplication {
 			adminUser.setStatus(UserStatus.valueOf("ACTIVE"));
 			adminUser.setIsAdmin(true); // Đặt là admin
 			adminUser.setDeleted(false);
-			adminUser.setPassword("NBT33333");
+			adminUser.setPassword(passwordEncoder.encode("NBT33333"));
 			adminUser.setSchool(schoolA);
 			userRepository.save(adminUser);
 			System.out.println("Đã lưu Admin User: " + adminUser.getFirstName());
